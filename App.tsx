@@ -4,7 +4,9 @@ import { GoalItem } from "./components/GoalItem";
 import { GoalInput } from "./components/GoalInput";
 
 export default function App() {
-  const [courseGoals, setCourseGoals] = useState<string[]>([]);
+  const [courseGoals, setCourseGoals] = useState<
+    { text: string; id: string }[]
+  >([]);
 
   return (
     <View style={styles.appContainer}>
@@ -12,8 +14,10 @@ export default function App() {
       <View style={styles.goalsContainer}>
         <FlatList
           data={courseGoals}
-          keyExtractor={(item, index) => "goals_item_key:" + item + index}
-          renderItem={({ item }) => <GoalItem item={item} />}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <GoalItem item={item} setCourseGoals={setCourseGoals} />
+          )}
         />
       </View>
     </View>

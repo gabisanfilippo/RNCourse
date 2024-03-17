@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { Button, StyleSheet, TextInput, View } from "react-native";
 
 interface Props {
-  setCourseGoals: Dispatch<SetStateAction<string[]>>;
+  setCourseGoals: Dispatch<SetStateAction<{ text: string; id: string }[]>>;
 }
 
 export const GoalInput = ({ setCourseGoals }: Props) => {
@@ -13,7 +13,10 @@ export const GoalInput = ({ setCourseGoals }: Props) => {
   }
 
   function addGoalHandler() {
-    setCourseGoals((prev) => [...prev, enteredGoalText]);
+    setCourseGoals((prev) => [
+      ...prev,
+      { text: enteredGoalText, id: Math.random().toString() },
+    ]);
     setEnteredGoalText("");
   }
 

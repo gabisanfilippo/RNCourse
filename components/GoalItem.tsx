@@ -1,13 +1,25 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Dispatch, SetStateAction } from "react";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 interface Props {
-  item: string;
+  item: { text: string; id: string };
+  setCourseGoals: Dispatch<SetStateAction<{ text: string; id: string }[]>>;
 }
 
-export const GoalItem = ({ item }: Props) => {
+export const GoalItem = ({ item, setCourseGoals }: Props) => {
+  function deleteGoalHandler(id: string) {
+    setCourseGoals((prev) => prev.filter((goal) => goal.id !== id));
+  }
+
   return (
     <View style={styles.goalItem}>
-      <Text style={styles.goalText}>{item}</Text>
+      <Pressable
+        onPress={deleteGoalHandler.bind(this, item.id)}
+        android_ripple={{ color: "#230649" }}
+        style={({ pressed }) => pressed && styles.pressedItem}
+      >
+        <Text style={styles.goalText}>{item.text}</Text>
+      </Pressable>
     </View>
   );
 };
@@ -17,9 +29,12 @@ const styles = StyleSheet.create({
     margin: 8,
     borderRadius: 6,
     backgroundColor: "#5e0acc",
-    padding: 8,
   },
   goalText: {
+    padding: 8,
     color: "#ffffff",
+  },
+  pressedItem: {
+    opacity: 0.5,
   },
 });
