@@ -1,11 +1,17 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { Button, StyleSheet, TextInput, View } from "react-native";
+import { Button, Modal, StyleSheet, TextInput, View } from "react-native";
 
 interface Props {
   setCourseGoals: Dispatch<SetStateAction<{ text: string; id: string }[]>>;
+  modalIsVisible: boolean;
+  setModalIsVisible: Dispatch<SetStateAction<boolean>>;
 }
 
-export const GoalInput = ({ setCourseGoals }: Props) => {
+export const GoalInput = ({
+  setCourseGoals,
+  modalIsVisible,
+  setModalIsVisible,
+}: Props) => {
   const [enteredGoalText, setEnteredGoalText] = useState("");
 
   function goalInputHandler(enteredText: string) {
@@ -18,18 +24,21 @@ export const GoalInput = ({ setCourseGoals }: Props) => {
       { text: enteredGoalText, id: Math.random().toString() },
     ]);
     setEnteredGoalText("");
+    setModalIsVisible(false);
   }
 
   return (
-    <View style={styles.inputContainer}>
-      <TextInput
-        placeholder="Your course goal!"
-        style={styles.textInput}
-        onChangeText={goalInputHandler}
-        value={enteredGoalText}
-      />
-      <Button title="Add Goal" onPress={addGoalHandler} />
-    </View>
+    <Modal visible={modalIsVisible} animationType="slide">
+      <View style={styles.inputContainer}>
+        <TextInput
+          placeholder="Your course goal!"
+          style={styles.textInput}
+          onChangeText={goalInputHandler}
+          value={enteredGoalText}
+        />
+        <Button title="Add Goal" onPress={addGoalHandler} />
+      </View>
+    </Modal>
   );
 };
 
